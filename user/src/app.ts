@@ -1,7 +1,10 @@
+import { config } from "dotenv"
+config()
 import * as express from "express"
 import { Request, Response } from "express"
 import { myDataSource } from "./app-data-source"
 import { User } from "./entity/user.entity"
+
 
 // Connect with data source
 myDataSource
