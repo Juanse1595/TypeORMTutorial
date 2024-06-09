@@ -16,6 +16,7 @@ myDataSource
     console.error("Error during Data Source initializacion:", err)
   })
 
+const userRepository = myDataSource.getRepository(User)
 
 // create and setup express app
 const app = express()
@@ -24,12 +25,12 @@ app.use(express.json())
 // register routes
 
 app.get("/users", async function (req: Request, res: Response) {
-  const results = await myDataSource.getRepository(User).find()
+  const results = await userRepository.find()
   res.json(results)
 })
 
 app.get("/users/:id", async function (req: Request, res: Response) {
-  const results = await myDataSource.getRepository(User).findOneBy({
+  const results = await userRepository.findOneBy({
     // @ts-ignore
     id: req.params.id,
   })
@@ -37,23 +38,23 @@ app.get("/users/:id", async function (req: Request, res: Response) {
 })
 
 app.post("/users", async function (req: Request, res: Response) {
-  const user = myDataSource.getRepository(User).create(req.body)
-  const results = myDataSource.getRepository(User).save(user)
+  const user = userRepository.create(req.body)
+  const results = userRepository.save(user)
   return res.send(results)
 })
 
 app.put("/users/:id", async function (req: Request, res: Response) {
-  const userToUpdate = await myDataSource.getRepository(User).findOneBy({
+  const userToUpdate = await userRepository.findOneBy({
     // @ts-ignore
     id: req.params.id,
   })
-  myDataSource.getRepository(User).merge(userToUpdate, req.body)
-  const results = myDataSource.getRepository(User).save(userToUpdate)
+  userRepository.merge(userToUpdate, req.body)
+  const results = userRepository.save(userToUpdate)
   return res.send(results)
 })
 
 app.delete("/users/:id", async function (req: Request, res: Response) {
-  const results = await myDataSource.getRepository(User).delete(req.params.id)
+  const results = await userRepository.delete(req.params.id)
   return res.send(results)
 })
 
